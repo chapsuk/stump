@@ -3,5 +3,7 @@ database:
   password: password
   addr: 127.0.0.1:5432
   database: stump_example
+redis:
+  addr: 127.0.0.1:6379
 web:
   debug: true

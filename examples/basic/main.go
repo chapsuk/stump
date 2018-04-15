@@ -8,6 +8,7 @@ import (
 	"github.com/m1ome/stump/package/crud"
 
 	"github.com/m1ome/stump/examples/basic/models"
+	"github.com/m1ome/stump/package/worker"
 )
 
 //
@@ -43,29 +44,8 @@ func (c *Controller) UserList(ctx web.Context) error {
 		return err
 	}
 
+	c.stump.Logger().Infow("User list", "users", users)
 	return ctx.JSON(http.StatusOK, users)
-}
-
-//
-// Basic workers function
-//
-
-func updateUserRating(s *stump.Stump) func() error {
-	return func() error {
-		users := []models.User{}
-		if err := crud.FindAll(s.DB(), &users); err != nil {
-			return err
-		}
-
-		for _, user := range users {
-			user.Rating += 1
-			if err := crud.Update(s.DB(), &user, "rating"); err != nil {
-				return err
-			}
-		}
-
-		return nil
-	}
 }
 
 //
@@ -80,6 +60,7 @@ func main() {
 
 	if err := s.Storages(&stump.StorageOptions{
 		Postgres: true,
+		Redis:    true,
 	}); err != nil {
 		s.Logger().Panicf("Error connection to storages: %v", err)
 	}
@@ -87,6 +68,33 @@ func main() {
 	c := &Controller{stump: s}
 	s.Web().Engine().POST("/", c.Register)
 	s.Web().Engine().GET("/", c.UserList)
+
+	s.Workers().Schedule(worker.Task{
+		Name:      "example",
+		Exclusive: true,
+		Scheduler: "@every 30s",
+		Handler: func(ctx worker.Context) error {
+			s.Logger().Info("Updating user ratings")
+
+			var users []models.User
+			if err := crud.FindAll(s.DB(), &users); err != nil {
+				s.Logger().Errorf("Error finding users: %v", err)
+				return err
+			}
+
+			for _, user := range users {
+				s.Logger().Infow("Updating user rating", "user", user)
+				user.Rating += 1
+				if _, err := s.DB().Model(&user).Where("id=?", user.ID).Update(); err != nil {
+					s.Logger().Errorf("Error updating user: %v", err)
+					return err
+				}
+			}
+
+			return nil
+		},
+	})
+	s.Workers().Start()
 
 	if err := s.Start("example", "Example application"); err != nil {
 		s.Logger().Errorf("Starting application error: %v", err)

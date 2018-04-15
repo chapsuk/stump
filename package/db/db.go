@@ -39,6 +39,11 @@ func New(opts Options) (*DB, error) {
 		PoolSize: opts.PoolSize,
 	})
 
+	//db.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {
+	//	query, _ := event.FormattedQuery()
+	//	log.Printf("%s %s", time.Since(event.StartTime), query)
+	//})
+
 	if _, err := db.Exec("SELECT 1"); err != nil {
 		return nil, errors.Wrap(err, "error connecting to database")
 	}

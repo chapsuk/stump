@@ -12,9 +12,7 @@ type Options struct {
 	PoolSize int
 }
 
-type Redis = redis.Client
-
-func New(opts Options) (*Redis, error) {
+func New(opts Options) (*redis.Client, error) {
 	client := redis.NewClient(&redis.Options{
 		Addr:     opts.Addr,
 		Password: opts.Password,

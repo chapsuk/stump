@@ -7,6 +7,8 @@ import (
 	"github.com/m1ome/stump/package/raven"
 	"github.com/m1ome/stump/package/config"
 	"github.com/m1ome/stump/package/web"
+	"github.com/m1ome/stump/package/worker"
+	"github.com/pkg/errors"
 )
 
 func initConnections(s *Stump, opts *StorageOptions) error {
@@ -96,5 +98,19 @@ func initWeb(s *Stump, opts Options) error {
 	})
 
 	s.web = e
+	return nil
+}
+
+func initWorkers(s *Stump) error {
+	redisClient := s.Redis()
+	if redisClient == nil {
+		return errors.New("empty redis client")
+	}
+
+	w := worker.New(worker.Options{
+		Redis: redisClient,
+	})
+
+	s.workers = w
 	return nil
 }

@@ -5,18 +5,21 @@ import (
 	"github.com/m1ome/stump/package/config"
 	"github.com/m1ome/stump/package/raven"
 	"github.com/m1ome/stump/package/db"
-	"github.com/m1ome/stump/package/redis"
 	"github.com/m1ome/stump/package/web"
 	"github.com/m1ome/stump/package/cli"
+	"github.com/m1ome/stump/package/worker"
+
+	"github.com/go-redis/redis"
 )
 
 type Stump struct {
-	logger *logger.Logger
-	config *config.Config
-	raven  *raven.Raven
-	db     *db.DB
-	redis  *redis.Redis
-	web    *web.Web
+	logger  *logger.Logger
+	config  *config.Config
+	raven   *raven.Raven
+	db      *db.DB
+	redis   *redis.Client
+	web     *web.Web
+	workers *worker.Worker
 }
 
 type Options struct {
@@ -89,7 +92,17 @@ func (s *Stump) Start(name string, usage string) error {
 }
 
 func (s *Stump) Storages(opts *StorageOptions) error {
+	s.Logger().Info("Initializing connections to storages")
 	return initConnections(s, opts)
+}
+
+func (s *Stump) Workers() *worker.Worker {
+	if s.workers == nil {
+		s.Logger().Info("Initializing workers")
+		initWorkers(s)
+	}
+
+	return s.workers
 }
 
 func (s *Stump) Web() *web.Web {
@@ -108,7 +121,7 @@ func (s *Stump) DB() *db.DB {
 	return s.db
 }
 
-func (s *Stump) Redis() *redis.Redis {
+func (s *Stump) Redis() *redis.Client {
 	return s.redis
 }
 
