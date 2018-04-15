@@ -1,0 +1,5 @@
+a: 1
+b: string
+c:
+  d: 1
+  e: string

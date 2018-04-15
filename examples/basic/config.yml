@@ -1,0 +1,7 @@
+database:
+  user: postgres
+  password: password
+  addr: 127.0.0.1:5432
+  database: stump_example
+web:
+  debug: true
