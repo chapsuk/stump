@@ -16,7 +16,7 @@ type Options struct {
 var (
 	DefaultConfig  *Config
 	DefaultOptions = &Options{
-		Path:    "./",
+		Path:    "./config.yaml",
 		Type:    "yaml",
 		AutoEnv: true,
 	}
