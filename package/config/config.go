@@ -41,7 +41,7 @@ func New(opts *Options) (*Config, error) {
 
 	// Reading file
 	if len(opts.Path) > 0 {
-		v.AddConfigPath(opts.Path)
+		v.SetConfigFile(opts.Path)
 
 		if err := v.ReadInConfig(); err != nil {
 			return nil, errors.Wrap(err, "error reading config file")
