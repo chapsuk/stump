@@ -6,13 +6,13 @@ import (
 )
 
 type Options struct {
-	Level LoggerLevel
+	Level Level
 	Nop   bool
 }
 
 var (
 	DefaultOptions = &Options{
-		Level: LoggerLevelDevelopment,
+		Level: Development,
 		Nop:   false,
 	}
 
@@ -39,9 +39,9 @@ func New(opts *Options) (*Logger, error) {
 	}
 
 	switch opts.Level {
-	case LoggerLevelDevelopment:
+	case Development:
 		logger, err = zap.NewDevelopment()
-	case LoggerLevelProduction:
+	case Production:
 		logger, err = zap.NewProduction()
 	default:
 		return nil, ErrUnknownLevel
