@@ -2,11 +2,11 @@ package logger
 
 import "go.uber.org/zap"
 
-type LoggerLevel int
+type Level int
 
 const (
-	LoggerLevelDevelopment LoggerLevel = iota+1
-	LoggerLevelProduction
+	Development Level = iota + 1
+	Production
 )
 
 type Logger = zap.SugaredLogger

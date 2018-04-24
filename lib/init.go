@@ -1,13 +1,13 @@
 package lib
 
 import (
+	"github.com/m1ome/stump/package/cli"
+	"github.com/m1ome/stump/package/config"
 	"github.com/m1ome/stump/package/db"
-	"github.com/m1ome/stump/package/redis"
 	"github.com/m1ome/stump/package/logger"
 	"github.com/m1ome/stump/package/raven"
-	"github.com/m1ome/stump/package/config"
+	"github.com/m1ome/stump/package/redis"
 	"github.com/m1ome/stump/package/web"
-	"github.com/m1ome/stump/package/cli"
 )
 
 func initDatabase(s *Stump, conf *config.Config) error {

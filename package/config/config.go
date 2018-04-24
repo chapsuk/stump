@@ -1,10 +1,11 @@
 package config
 
 import (
-	"github.com/spf13/viper"
-	"github.com/pkg/errors"
 	"os"
 	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/spf13/viper"
 )
 
 type Options struct {

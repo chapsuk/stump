@@ -3,22 +3,22 @@ package lib
 import (
 	"github.com/go-redis/redis"
 
-	"github.com/m1ome/stump/package/logger"
-	"github.com/m1ome/stump/package/db"
-	"github.com/m1ome/stump/package/config"
-	"github.com/m1ome/stump/package/web"
-	"github.com/m1ome/stump/package/raven"
 	"github.com/m1ome/stump/package/cli"
+	"github.com/m1ome/stump/package/config"
+	"github.com/m1ome/stump/package/db"
+	"github.com/m1ome/stump/package/logger"
+	"github.com/m1ome/stump/package/raven"
+	"github.com/m1ome/stump/package/web"
 )
 
 type Stump struct {
-	logger       *logger.Logger
-	db           *db.DB
-	config       *config.Config
-	web          *web.Web
-	redis        *redis.Client
-	raven        *raven.Raven
-	cli          *cli.Cli
+	logger *logger.Logger
+	db     *db.DB
+	config *config.Config
+	web    *web.Web
+	redis  *redis.Client
+	raven  *raven.Raven
+	cli    *cli.Cli
 
 	opts *Options
 }
@@ -38,7 +38,7 @@ func New(opts *Options) (*Stump, error) {
 		return nil, err
 	}
 
-	// Loading configuraion
+	// Loading configuration
 	if err := initConfig(s, opts.ConfigPath, opts.ConfigType); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (s *Stump) Cli() *cli.Cli {
 	return s.cli
 }
 
-func (s *Stump) ServeCommand(fn func () error) cli.Command {
+func (s *Stump) ServeCommand(fn func() error) cli.Command {
 	return cli.Command{
 		Name:    "serve",
 		Aliases: []string{"s"},

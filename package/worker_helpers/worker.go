@@ -3,8 +3,8 @@ package worker_helpers
 import (
 	"time"
 
-	"github.com/go-redis/redis"
 	"github.com/chapsuk/worker"
+	"github.com/go-redis/redis"
 	"github.com/m1ome/stump/package/logger"
 )
 

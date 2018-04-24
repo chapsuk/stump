@@ -2,6 +2,7 @@ package logger
 
 import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,7 +15,7 @@ func TestNew(t *testing.T) {
 
 	t.Run("Basic logger (Production)", func(t *testing.T) {
 		logger, err := New(&Options{
-			Level: LoggerLevelProduction,
+			Level: Production,
 		})
 		assert.NoError(t, err)
 		assert.NotNil(t, logger)

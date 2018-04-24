@@ -3,8 +3,8 @@ package lib
 import (
 	"github.com/m1ome/stump/package/cli"
 	"github.com/m1ome/stump/package/db"
-	"github.com/m1ome/stump/package/migrate"
 	"github.com/m1ome/stump/package/logger"
+	"github.com/m1ome/stump/package/migrate"
 )
 
 func cliMigrate(s *Stump) cli.Command {
@@ -15,7 +15,7 @@ func cliMigrate(s *Stump) cli.Command {
 		Usage:   "database migration",
 		Flags: []cli.Flag{
 			cli.StringFlag{
-				Name: "path",
+				Name:  "path",
 				Value: "./migrations",
 				Usage: "Directory with migrations",
 			},
@@ -62,7 +62,7 @@ func cliMigrate(s *Stump) cli.Command {
 						return err
 					}
 
-					v, err :=  m.VersionName()
+					v, err := m.VersionName()
 					if err != nil {
 						return err
 					}
@@ -72,11 +72,11 @@ func cliMigrate(s *Stump) cli.Command {
 				},
 			},
 			{
-				Name: "create",
+				Name:  "create",
 				Usage: "create new migration",
 				Flags: []cli.Flag{
 					cli.StringFlag{
-						Name: "name",
+						Name:  "name",
 						Usage: "Migration name",
 					},
 				},

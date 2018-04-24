@@ -3,7 +3,7 @@ package lib
 import "github.com/m1ome/stump/package/logger"
 
 type Options struct {
-	LoggerLevel logger.LoggerLevel
+	LoggerLevel logger.Level
 	LoggerNop   bool
 	ConfigPath  string
 	ConfigType  string
@@ -17,7 +17,7 @@ const (
 
 var (
 	DefaultOptions = &Options{
-		LoggerLevel: logger.LoggerLevelDevelopment,
+		LoggerLevel: logger.Development,
 		LoggerNop:   false,
 		ConfigType:  DefaultConfigType,
 		ConfigPath:  DefaultConfigPath,
