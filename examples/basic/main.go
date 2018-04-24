@@ -1,18 +1,17 @@
 package main
 
 import (
+	"context"
 	"net/http"
+	"time"
 
+	"github.com/chapsuk/worker"
 	"github.com/m1ome/stump"
-	"github.com/m1ome/stump/package/web"
-	"github.com/m1ome/stump/package/crud"
-
 	"github.com/m1ome/stump/examples/basic/models"
 	"github.com/m1ome/stump/lib"
-	"github.com/chapsuk/worker"
-	"context"
+	"github.com/m1ome/stump/package/crud"
+	"github.com/m1ome/stump/package/web"
 	"github.com/m1ome/stump/package/worker_helpers"
-	"time"
 )
 
 //
@@ -96,7 +95,7 @@ func main() {
 				Key:     "example",
 				TTL:     time.Second,
 				Retries: 0,
-			})).ByTicker(time.Second*30),
+			})).ByTicker(time.Second * 30),
 		)
 
 		wg.Run()

@@ -1,12 +1,12 @@
 package web
 
 import (
+	"context"
+	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
-	"context"
 	"time"
-	"net/http"
-	"fmt"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -19,13 +19,13 @@ type Options struct {
 }
 
 type (
-	Engine = echo.Echo
-	Context = echo.Context
-	HandlerFunc = echo.HandlerFunc
-	MiddlewareFunc = echo.MiddlewareFunc
-	Group = echo.Group
+	Engine             = echo.Echo
+	Context            = echo.Context
+	HandlerFunc        = echo.HandlerFunc
+	MiddlewareFunc     = echo.MiddlewareFunc
+	Group              = echo.Group
 	BasicAuthValidator = middleware.BasicAuthValidator
-	HTTPError = echo.HTTPError
+	HTTPError          = echo.HTTPError
 )
 
 type Web struct {
@@ -113,8 +113,7 @@ func (w *Web) DefaultHTTPErrorHandler(err error, c Context) {
 		if c.Request().Method == echo.HEAD {
 			err = c.NoContent(code)
 		} else {
-			err = c.JSON(code, Response{Error:res})
+			err = c.JSON(code, Response{Error: res})
 		}
 	}
 }
-

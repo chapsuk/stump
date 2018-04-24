@@ -1,11 +1,12 @@
 package web
 
 import (
-	"github.com/labstack/echo"
-	"net/http"
 	"fmt"
-	"github.com/pkg/errors"
+	"net/http"
 	"runtime"
+
+	"github.com/labstack/echo"
+	"github.com/pkg/errors"
 )
 
 func BadRequest(message interface{}) *HTTPError {

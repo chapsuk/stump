@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"go.uber.org/zap"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 type Options struct {
