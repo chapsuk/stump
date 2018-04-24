@@ -1,4 +1,4 @@
-package stump
+package lib
 
 import (
 	"github.com/m1ome/stump/package/cli"
@@ -7,7 +7,7 @@ import (
 	"github.com/m1ome/stump/package/logger"
 )
 
-func (s *Stump) migrate() cli.Command {
+func cliMigrate(s *Stump) cli.Command {
 	// Create default migrations
 	return cli.Command{
 		Name:    "migrate",
@@ -21,7 +21,7 @@ func (s *Stump) migrate() cli.Command {
 			},
 		},
 		Before: func(c *cli.Context) error {
-			s.Logger().Info("Working with migrations")
+			s.logger.Info("Working with migrations")
 			return nil
 		},
 		Subcommands: []cli.Command{
@@ -29,9 +29,9 @@ func (s *Stump) migrate() cli.Command {
 				Name:  "latest",
 				Usage: "migrate to latest version",
 				Action: func(c *cli.Context) error {
-					s.Logger().Info("Migrating to latest version")
+					s.logger.Info("Migrating to latest version")
 
-					m, err := migrator(s.DB(), s.Logger(), c)
+					m, err := migrator(s.db, s.logger, c)
 					if err != nil {
 						return err
 					}
@@ -43,9 +43,9 @@ func (s *Stump) migrate() cli.Command {
 				Name:  "rollback",
 				Usage: "rollback latest migration",
 				Action: func(c *cli.Context) error {
-					s.Logger().Info("Rolling back migration")
+					s.logger.Info("Rolling back migration")
 
-					m, err := migrator(s.DB(), s.Logger(), c)
+					m, err := migrator(s.db, s.logger, c)
 					if err != nil {
 						return err
 					}
@@ -57,7 +57,7 @@ func (s *Stump) migrate() cli.Command {
 				Name:  "version",
 				Usage: "see database version",
 				Action: func(c *cli.Context) error {
-					m, err := migrator(s.DB(), s.Logger(), c)
+					m, err := migrator(s.db, s.logger, c)
 					if err != nil {
 						return err
 					}
@@ -67,7 +67,7 @@ func (s *Stump) migrate() cli.Command {
 						return err
 					}
 
-					s.Logger().Infof("Database version: %s", v)
+					s.logger.Infof("Database version: %s", v)
 					return nil
 				},
 			},
@@ -83,7 +83,7 @@ func (s *Stump) migrate() cli.Command {
 				Action: func(c *cli.Context) error {
 					path := c.GlobalString("path")
 					name := c.Args().Get(0)
-					s.Logger().Infow("Creating new migration", "path", path, "name", name)
+					s.logger.Infow("Creating new migration", "path", path, "name", name)
 
 					return migrate.CreateMigration(path, name)
 				},

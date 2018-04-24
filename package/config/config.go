@@ -3,21 +3,21 @@ package config
 import (
 	"github.com/spf13/viper"
 	"github.com/pkg/errors"
+	"os"
+	"strings"
 )
 
 type Options struct {
 	Path    string
 	Type    string
-	Name    string
 	AutoEnv bool
 }
 
 var (
-	DefaultConfig *Config
+	DefaultConfig  *Config
 	DefaultOptions = &Options{
-		Path:    ".",
+		Path:    "./config.yml",
 		Type:    "yaml",
-		Name:    "config",
 		AutoEnv: true,
 	}
 )
@@ -30,22 +30,22 @@ func New(opts *Options) (*Config, error) {
 	}
 
 	v := viper.New()
-
-	v.SetConfigName(opts.Name)
 	v.SetConfigType(opts.Type)
-	v.AddConfigPath(opts.Path)
 
 	if opts.AutoEnv {
 		v.AutomaticEnv()
+		v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	}
 
-	if err := v.ReadInConfig(); err != nil {
-		return nil, errors.Wrap(err, "error reading config")
+	// Reading file
+	buf, err := os.Open(opts.Path)
+	if err != nil {
+		return nil, errors.Wrap(err, "error reading config file")
+	}
+
+	if err := v.ReadConfig(buf); err != nil {
+		return nil, errors.Wrap(err, "error parsing config file")
 	}
 
 	return v, nil
-}
-
-func SetDefault(conf *Config) {
-	DefaultConfig = conf
 }

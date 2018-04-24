@@ -7,3 +7,7 @@ redis:
   addr: 127.0.0.1:6379
 web:
   debug: true
+cli:
+  name: example
+  usage: basic http server & db checker
+  version: 0.1

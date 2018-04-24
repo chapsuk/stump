@@ -8,7 +8,11 @@ import (
 	"github.com/m1ome/stump/package/crud"
 
 	"github.com/m1ome/stump/examples/basic/models"
-	"github.com/m1ome/stump/package/worker"
+	"github.com/m1ome/stump/lib"
+	"github.com/chapsuk/worker"
+	"context"
+	"github.com/m1ome/stump/package/worker_helpers"
+	"time"
 )
 
 //
@@ -16,7 +20,7 @@ import (
 //
 
 type Controller struct {
-	stump *stump.Stump
+	stump *lib.Stump
 }
 
 func (c *Controller) Register(ctx web.Context) error {
@@ -53,33 +57,25 @@ func (c *Controller) UserList(ctx web.Context) error {
 //
 
 func main() {
-	s, err := stump.New(stump.Options{})
-	if err != nil {
-		s.Logger().Panicf("Error creating Stump instance: %v", err)
-	}
-
-	if err := s.Storages(&stump.StorageOptions{
-		Postgres: true,
-		Redis:    true,
-	}); err != nil {
-		s.Logger().Panicf("Error connection to storages: %v", err)
-	}
-
+	s := stump.MustSetup()
 	c := &Controller{stump: s}
-	s.Web().Engine().POST("/", c.Register)
-	s.Web().Engine().GET("/", c.UserList)
 
-	s.Workers().Schedule(worker.Task{
-		Name:      "example",
-		Exclusive: true,
-		Scheduler: "@every 30s",
-		Handler: func(ctx worker.Context) error {
+	server := s.ServeCommand(func() error {
+		if err := s.Init(true, true); err != nil {
+			return err
+		}
+
+		// Binding web
+		s.Web().Engine().POST("/", c.Register)
+		s.Web().Engine().GET("/", c.UserList)
+
+		job := func(ctx context.Context) {
 			s.Logger().Info("Updating user ratings")
 
 			var users []models.User
 			if err := crud.FindAll(s.DB(), &users); err != nil {
 				s.Logger().Errorf("Error finding users: %v", err)
-				return err
+				return
 			}
 
 			for _, user := range users {
@@ -87,16 +83,28 @@ func main() {
 				user.Rating += 1
 				if _, err := s.DB().Model(&user).Where("id=?", user.ID).Update(); err != nil {
 					s.Logger().Errorf("Error updating user: %v", err)
-					return err
+					return
 				}
 			}
 
-			return nil
-		},
-	})
-	s.Workers().Start()
+			return
+		}
 
-	if err := s.Start("example", "Example application"); err != nil {
+		wg := worker.NewGroup()
+		wg.Add(
+			worker.New(job).WithBsmRedisLock(worker_helpers.RedisLockOptions(s.Redis(), worker_helpers.Options{
+				Key:     "example",
+				TTL:     time.Second,
+				Retries: 0,
+			})).ByTicker(time.Second*30),
+		)
+
+		wg.Run()
+		return nil
+	})
+
+	s.Cli().Add(server)
+	if err := s.Run(); err != nil {
 		s.Logger().Errorf("Starting application error: %v", err)
 	}
 }

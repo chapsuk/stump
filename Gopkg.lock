@@ -14,6 +14,18 @@
   version = "2018.01.18"
 
 [[projects]]
+  name = "github.com/chapsuk/wait"
+  packages = ["."]
+  revision = "a35d477d95204e4e0da1f970c958449ac8e685e4"
+  version = "v0.2.1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/chapsuk/worker"
+  packages = ["."]
+  revision = "70ec7f1e8049b208530581ad7b490323dc7e96eb"
+
+[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
@@ -245,13 +257,13 @@
     "acme",
     "acme/autocert"
   ]
-  revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
+  revision = "2b6c08872f4b66da917bb4ce98df4f0307330f78"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "2281fa97ef7b0c26324634d5a22f04babdac8713"
+  revision = "79b0c6888797020a994db17c8510466c72fe75d9"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -275,6 +287,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "eb93ee6b7d332f76fc8b23944a253a095f81c9e5b903c6dd4f1cb1e38f656a24"
+  inputs-digest = "e9fe84ecfefd5956bd7fe0e475b18b83720d8a144327bbe42918b3f4e7e30821"
   solver-name = "gps-cdcl"
   solver-version = 1

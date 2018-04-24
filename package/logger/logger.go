@@ -7,24 +7,35 @@ import (
 
 type Options struct {
 	Level LoggerLevel
+	Nop   bool
 }
 
 var (
 	DefaultOptions = &Options{
 		Level: LoggerLevelDevelopment,
+		Nop:   false,
 	}
 
 	ErrUnknownLevel = errors.New("unknown level")
 )
 
+func Nop() *Logger {
+	return zap.NewNop().Sugar()
+}
+
 func New(opts *Options) (*Logger, error) {
 	var (
 		logger *zap.Logger
-		err error
+		err    error
 	)
 
 	if opts == nil {
 		opts = DefaultOptions
+	}
+
+	if opts.Nop == true {
+		// Create Nop logger
+		return Nop(), nil
 	}
 
 	switch opts.Level {

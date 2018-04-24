@@ -12,8 +12,9 @@ type Cli struct {
 }
 
 type Options struct {
-	Name  string
-	Usage string
+	Name    string
+	Usage   string
+	Version string
 }
 
 func (o *Options) init() {
@@ -25,8 +26,11 @@ func New(opts *Options) *Cli {
 
 	// Creating main application
 	app := cli.NewApp()
+
+	// Basic stuff
 	app.Name = opts.Name
 	app.Usage = opts.Usage
+	app.Version = opts.Version
 
 	return &Cli{
 		app: app,
