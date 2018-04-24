@@ -38,7 +38,7 @@ func New(opts *Options) (*Stump, error) {
 		return nil, err
 	}
 
-	// Loading configuraion
+	// Loading configuration
 	if err := initConfig(s, opts.ConfigPath, opts.ConfigType); err != nil {
 		return nil, err
 	}
