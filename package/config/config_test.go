@@ -7,10 +7,10 @@ import (
 )
 
 func TestSetup(t *testing.T) {
-	conf, err := New(&Options{
-		Path:    "./fixtures",
-		AutoEnv: true,
-	})
+	opts := *DefaultOptions
+	opts.Path = "./fixtures/config.yaml"
+
+	conf, err := New(&opts)
 
 	assert.NoError(t, err)
 	assert.Equal(t, 1, conf.GetInt("a"))

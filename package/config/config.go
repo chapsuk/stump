@@ -1,7 +1,6 @@
 package config
 
 import (
-	"os"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -31,7 +30,9 @@ func New(opts *Options) (*Config, error) {
 	}
 
 	v := viper.New()
-	v.SetConfigType(opts.Type)
+	if len(opts.Type) > 0 {
+		v.SetConfigType(opts.Type)
+	}
 
 	if opts.AutoEnv {
 		v.AutomaticEnv()
@@ -39,13 +40,12 @@ func New(opts *Options) (*Config, error) {
 	}
 
 	// Reading file
-	buf, err := os.Open(opts.Path)
-	if err != nil {
-		return nil, errors.Wrap(err, "error reading config file")
-	}
+	if len(opts.Path) > 0 {
+		v.SetConfigFile(opts.Path)
 
-	if err := v.ReadConfig(buf); err != nil {
-		return nil, errors.Wrap(err, "error parsing config file")
+		if err := v.ReadInConfig(); err != nil {
+			return nil, errors.Wrap(err, "error reading config file")
+		}
 	}
 
 	return v, nil
