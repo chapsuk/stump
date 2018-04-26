@@ -8,7 +8,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-type ExternalSummary = prometheus.ObserverVec
+type ExternalSummary = prometheus.SummaryVec
 
 type ExternalOptions struct {
 	Name     string

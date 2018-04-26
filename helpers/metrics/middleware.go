@@ -9,7 +9,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-type ControllerSummary = prometheus.ObserverVec
+type ControllerSummary = prometheus.SummaryVec
 
 func Middleware(metric ControllerSummary) web.MiddlewareFunc {
 	return func(next web.HandlerFunc) web.HandlerFunc {
