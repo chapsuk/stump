@@ -5,7 +5,7 @@ import (
 	"github.com/m1ome/stump/helpers"
 	"github.com/m1ome/stump/examples/basic/controllers"
 	"github.com/m1ome/stump/examples/basic/workers"
-	"github.com/m1ome/stump/lib"
+	"github.com/m1ome/stump/core"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 		c := controllers.New(s)
 		w := workers.New(s)
 
-		s.SetIniters(lib.InitDatabase(), lib.InitRedis())
+		s.SetIniters(core.InitDatabase(), core.InitRedis())
 		if err := s.Init(); err != nil {
 			return err
 		}

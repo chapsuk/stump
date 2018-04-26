@@ -1,7 +1,7 @@
 package workers
 
 import (
-	"github.com/m1ome/stump/lib"
+	"github.com/m1ome/stump/core"
 	"github.com/chapsuk/worker"
 	"context"
 	"github.com/m1ome/stump/examples/basic/models"
@@ -11,11 +11,11 @@ import (
 )
 
 type Workers struct {
-	stump *lib.Stump
+	stump *core.Stump
 	g     *worker.Group
 }
 
-func New(s *lib.Stump) *Workers {
+func New(s *core.Stump) *Workers {
 	return &Workers{
 		stump: s,
 		g:     worker.NewGroup(),

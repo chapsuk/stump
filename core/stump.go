@@ -1,4 +1,4 @@
-package lib
+package core
 
 import (
 	"github.com/go-redis/redis"

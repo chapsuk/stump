@@ -1,4 +1,4 @@
-package lib
+package core
 
 import (
 	"github.com/m1ome/stump/package/cli"

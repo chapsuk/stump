@@ -2,10 +2,10 @@ package helpers
 
 import (
 	"github.com/m1ome/stump/package/cli"
-	"github.com/m1ome/stump/lib"
+	"github.com/m1ome/stump/core"
 )
 
-func CliCommandServe(s *lib.Stump, fn func() error) cli.Command {
+func CliCommandServe(s *core.Stump, fn func() error) cli.Command {
 	return cli.Command{
 		Name:    "serve",
 		Aliases: []string{"s"},

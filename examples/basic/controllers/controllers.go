@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/m1ome/stump/lib"
+	"github.com/m1ome/stump/core"
 	"github.com/m1ome/stump/package/web"
 	"github.com/m1ome/stump/examples/basic/models"
 	"github.com/m1ome/stump/package/crud"
@@ -10,10 +10,10 @@ import (
 )
 
 type Controller struct {
-	stump *lib.Stump
+	stump *core.Stump
 }
 
-func New(s *lib.Stump) *Controller {
+func New(s *core.Stump) *Controller {
 	return &Controller{stump: s}
 }
 
