@@ -1,4 +1,4 @@
-package helpers
+package cli
 
 import (
 	"github.com/m1ome/stump/package/cli"
