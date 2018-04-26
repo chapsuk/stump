@@ -12,14 +12,12 @@ import (
 	"github.com/m1ome/stump/lib"
 	"github.com/m1ome/stump/package/crud"
 	"github.com/m1ome/stump/package/web"
-	"github.com/m1ome/stump/package/worker_helpers"
 	"github.com/m1ome/stump/helpers"
 )
 
 //
 // Controllers example
 //
-
 type Controller struct {
 	stump *lib.Stump
 }
@@ -56,7 +54,6 @@ func (c *Controller) UserList(ctx web.Context) error {
 //
 // Workers handler
 //
-
 type Workers struct {
 	stump *lib.Stump
 	g     *worker.Group
@@ -105,13 +102,14 @@ func (w *Workers) Stop() {
 //
 // Main function
 //
-
 func main() {
 	s := stump.MustSetup()
-	c := &Controller{stump: s}
-	w := &Workers{stump: s}
 
 	serve := helpers.CliCommandServe(s, func() error {
+		// Initializing controller & workers
+		c := &Controller{stump: s}
+		w := &Workers{stump: s}
+
 		if err := s.Init(true, true); err != nil {
 			return err
 		}
