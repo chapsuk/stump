@@ -5,20 +5,9 @@ import (
 	"github.com/m1ome/stump/helpers"
 	"github.com/m1ome/stump/examples/basic/controllers"
 	"github.com/m1ome/stump/examples/basic/workers"
+	"github.com/m1ome/stump/lib"
 )
 
-//
-// Controllers example
-//
-
-
-//
-// Workers handler
-//
-
-//
-// Main function
-//
 func main() {
 	s := stump.MustSetup()
 
@@ -27,7 +16,8 @@ func main() {
 		c := controllers.New(s)
 		w := workers.New(s)
 
-		if err := s.Init(true, true); err != nil {
+		s.SetIniters(lib.InitDatabase(), lib.InitRedis())
+		if err := s.Init(); err != nil {
 			return err
 		}
 
