@@ -27,6 +27,7 @@ func (w *Workers) UpdateUserRatings(ctx context.Context) {
 
 	var users []models.User
 	if err := crud.FindAll(w.stump.DB(), &users); err != nil {
+		w.stump.Raven().CaptureError(err, nil)
 		w.stump.Logger().Errorf("Error finding users: %v", err)
 		return
 	}
@@ -35,6 +36,7 @@ func (w *Workers) UpdateUserRatings(ctx context.Context) {
 		w.stump.Logger().Infow("Updating user rating", "user", user)
 		user.Rating += 1
 		if _, err := w.stump.DB().Model(&user).Where("id=?", user.ID).Update(); err != nil {
+			w.stump.Raven().CaptureError(err, nil)
 			w.stump.Logger().Errorf("Error updating user: %v", err)
 			return
 		}
