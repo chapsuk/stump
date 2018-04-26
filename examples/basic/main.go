@@ -16,7 +16,7 @@ func main() {
 		c := controllers.New(s)
 		w := workers.New(s)
 
-		s.SetIniters(core.InitDatabase(), core.InitRedis())
+		s.SetIniters(core.InitDatabase(), core.InitRedis(), core.InitRaven())
 		if err := s.Init(); err != nil {
 			return err
 		}
