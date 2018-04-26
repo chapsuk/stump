@@ -12,6 +12,7 @@ import (
 	"github.com/m1ome/stump/package/crud"
 	"github.com/m1ome/stump/package/web"
 	"github.com/m1ome/stump/package/worker_helpers"
+	"github.com/m1ome/stump/helpers"
 )
 
 //
@@ -59,7 +60,7 @@ func main() {
 	s := stump.MustSetup()
 	c := &Controller{stump: s}
 
-	server := s.ServeCommand(func() error {
+	serve := helpers.CliCommandServe(s, func() error {
 		if err := s.Init(true, true); err != nil {
 			return err
 		}
@@ -102,7 +103,10 @@ func main() {
 		return nil
 	})
 
-	s.Cli().Add(server)
+	// Adding serve command
+	s.Cli().Add(serve)
+
+	// Running instance
 	if err := s.Run(); err != nil {
 		s.Logger().Errorf("Starting application error: %v", err)
 	}

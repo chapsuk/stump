@@ -115,21 +115,6 @@ func (s *Stump) Cli() *cli.Cli {
 	return s.cli
 }
 
-func (s *Stump) ServeCommand(fn func() error) cli.Command {
-	return cli.Command{
-		Name:    "serve",
-		Aliases: []string{"s"},
-		Usage:   "start web server",
-		Action: func(c *cli.Context) error {
-			// Handling all stuff together
-			if err := fn(); err != nil {
-				return err
-			}
-
-			return s.ServeHTTP()
-		},
-	}
-}
 
 func (s *Stump) Init(redis, db bool) error {
 	// Loading Raven error reporting
