@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/chapsuk/worker"
+
 	"github.com/m1ome/stump"
 	"github.com/m1ome/stump/examples/basic/models"
 	"github.com/m1ome/stump/lib"
@@ -53,12 +54,62 @@ func (c *Controller) UserList(ctx web.Context) error {
 }
 
 //
+// Workers handler
+//
+
+type Workers struct {
+	stump *lib.Stump
+	g     *worker.Group
+}
+
+func (w *Workers) UpdateUserRatings(ctx context.Context) {
+	w.stump.Logger().Info("Updating user ratings")
+
+	var users []models.User
+	if err := crud.FindAll(w.stump.DB(), &users); err != nil {
+		w.stump.Logger().Errorf("Error finding users: %v", err)
+		return
+	}
+
+	for _, user := range users {
+		w.stump.Logger().Infow("Updating user rating", "user", user)
+		user.Rating += 1
+		if _, err := w.stump.DB().Model(&user).Where("id=?", user.ID).Update(); err != nil {
+			w.stump.Logger().Errorf("Error updating user: %v", err)
+			return
+		}
+	}
+
+	return
+}
+
+func (w *Workers) Start() {
+	wg := worker.NewGroup()
+	wg.Add(
+		helpers.ScheduleWithLock(w.stump.Redis(), w.UpdateUserRatings, time.Second*30, helpers.LockOptions{
+			Key:     "locker",
+			TTL:     time.Minute,
+			Logger:  w.stump.Logger(),
+			Retries: 0,
+		}),
+	)
+
+	w.g = wg
+	w.g.Run()
+}
+
+func (w *Workers) Stop() {
+	w.g.Stop()
+}
+
+//
 // Main function
 //
 
 func main() {
 	s := stump.MustSetup()
 	c := &Controller{stump: s}
+	w := &Workers{stump: s}
 
 	serve := helpers.CliCommandServe(s, func() error {
 		if err := s.Init(true, true); err != nil {
@@ -69,37 +120,9 @@ func main() {
 		s.Web().Engine().POST("/", c.Register)
 		s.Web().Engine().GET("/", c.UserList)
 
-		job := func(ctx context.Context) {
-			s.Logger().Info("Updating user ratings")
+		// Starting workers
+		w.Start()
 
-			var users []models.User
-			if err := crud.FindAll(s.DB(), &users); err != nil {
-				s.Logger().Errorf("Error finding users: %v", err)
-				return
-			}
-
-			for _, user := range users {
-				s.Logger().Infow("Updating user rating", "user", user)
-				user.Rating += 1
-				if _, err := s.DB().Model(&user).Where("id=?", user.ID).Update(); err != nil {
-					s.Logger().Errorf("Error updating user: %v", err)
-					return
-				}
-			}
-
-			return
-		}
-
-		wg := worker.NewGroup()
-		wg.Add(
-			worker.New(job).WithBsmRedisLock(worker_helpers.RedisLockOptions(s.Redis(), worker_helpers.Options{
-				Key:     "example",
-				TTL:     time.Second,
-				Retries: 0,
-			})).ByTicker(time.Second * 30),
-		)
-
-		wg.Run()
 		return nil
 	})
 

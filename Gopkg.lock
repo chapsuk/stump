@@ -23,7 +23,7 @@
   branch = "master"
   name = "github.com/chapsuk/worker"
   packages = ["."]
-  revision = "70ec7f1e8049b208530581ad7b490323dc7e96eb"
+  revision = "4702ca5067b64005c81fba5ddecf22e5c3651ba9"
 
 [[projects]]
   name = "github.com/davecgh/go-spew"
@@ -47,7 +47,7 @@
   branch = "master"
   name = "github.com/getsentry/raven-go"
   packages = ["."]
-  revision = "d1470f50d3a3a38533355a9fab7393e25a3b4226"
+  revision = "0df589c7a903b6eb2b0df960a8719d64708476c0"
 
 [[projects]]
   name = "github.com/go-pg/pg"
@@ -117,8 +117,8 @@
     "log",
     "random"
   ]
-  revision = "6fe1405d73ec4bd4cd8a4ac8e2a2b2bf95d03954"
-  version = "0.2.4"
+  revision = "588f4e8bddc6cb45c27b448e925c7fd6a5545434"
+  version = "0.2.5"
 
 [[projects]]
   name = "github.com/magiconair/properties"
@@ -257,13 +257,13 @@
     "acme",
     "acme/autocert"
   ]
-  revision = "2b6c08872f4b66da917bb4ce98df4f0307330f78"
+  revision = "dccd99e89d39b13e12f1103c72e3bc49eb40a833"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "79b0c6888797020a994db17c8510466c72fe75d9"
+  revision = "bb9c189858d91f42db229b04d45a4c3d23a7662a"
 
 [[projects]]
   name = "golang.org/x/text"
