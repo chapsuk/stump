@@ -13,6 +13,7 @@ type Options struct {
 const (
 	DefaultConfigPath = "./config.yml"
 	DefaultConfigType = "yaml"
+	DefaultHttpPort   = ":8080"
 )
 
 var (

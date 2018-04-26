@@ -45,7 +45,7 @@ func (w *Workers) UpdateUserRatings(ctx context.Context) {
 
 func (w *Workers) Start() {
 	w.stump.Logger().Infow("Starting workers")
-	
+
 	w.g.Add(
 		helpers.ScheduleWithLock(w.stump.Redis(), w.UpdateUserRatings, time.Second*30, helpers.LockOptions{
 			Key:     "locker",

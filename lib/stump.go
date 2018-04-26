@@ -126,8 +126,8 @@ func (s *Stump) Cli() *cli.Cli {
 func (s *Stump) ServeHTTP() error {
 	address := s.config.GetString("web.address")
 	if address == "" {
-		s.logger.Info("Binding on default port: 8080")
-		address = ":8080"
+		s.logger.Info("Binding on default port: " + DefaultHttpPort)
+		address = DefaultHttpPort
 	} else {
 		s.logger.Infof("Start listening on: %v", address)
 	}
