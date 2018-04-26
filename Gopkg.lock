@@ -32,18 +32,6 @@
   revision = "4702ca5067b64005c81fba5ddecf22e5c3651ba9"
 
 [[projects]]
-  name = "github.com/cryptopay-dev/go-metrics"
-  packages = ["."]
-  revision = "b3db16ac55897110edab7f7e736a373f7def773b"
-  version = "3.0"
-
-[[projects]]
-  name = "github.com/cryptopay-dev/yaga"
-  packages = ["web"]
-  revision = "69ffecfc3e9959a5da07c17c0e241f34727b481b"
-  version = "v1.15.0"
-
-[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
@@ -173,22 +161,6 @@
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
-
-[[projects]]
-  name = "github.com/nats-io/go-nats"
-  packages = [
-    ".",
-    "encoders/builtin",
-    "util"
-  ]
-  revision = "062418ea1c2181f52dc0f954f6204370519a868b"
-  version = "v1.5.0"
-
-[[projects]]
-  name = "github.com/nats-io/nuid"
-  packages = ["."]
-  revision = "289cccf02c178dc782430d534e3c1f5b72af807f"
-  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/pelletier/go-toml"
@@ -369,6 +341,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "28d1b63f1b04f9268b59e8d8f29602596321abc836c551a22e734d6dd953bab0"
+  inputs-digest = "6048339b20a0d7fd839ac01a6b6b421feaae669e23c6e3dec68a8d13c377ffde"
   solver-name = "gps-cdcl"
   solver-version = 1

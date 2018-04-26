@@ -7,14 +7,12 @@ import (
 
 type transport struct {
 	name    string
-	metric  ExternalSummary
 	tripper http.RoundTripper
 }
 
-func applyTransport(name string, metric ExternalSummary, client *http.Client) *http.Client {
+func applyTransport(name string, client *http.Client) *http.Client {
 	client.Transport = &transport{
 		name:    name,
-		metric:  metric,
 		tripper: client.Transport,
 	}
 
@@ -26,7 +24,6 @@ func (t *transport) RoundTrip(req *http.Request) (res *http.Response, err error)
 	defer func(dt time.Time) {
 		WriteExternalCall(ExternalOptions{
 			Name:     t.name,
-			Metric:   t.metric,
 			Start:    dt,
 			Request:  req,
 			Response: res,
@@ -42,6 +39,6 @@ func (t *transport) RoundTrip(req *http.Request) (res *http.Response, err error)
 	return
 }
 
-func WrapClient(name string, metric ExternalSummary, client *http.Client) *http.Client {
-	return applyTransport(name, metric, client)
+func WrapClient(name string, client *http.Client) *http.Client {
+	return applyTransport(name, client)
 }

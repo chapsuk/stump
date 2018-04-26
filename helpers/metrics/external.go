@@ -4,15 +4,10 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
-	"github.com/prometheus/client_golang/prometheus"
 )
-
-type ExternalSummary = prometheus.SummaryVec
 
 type ExternalOptions struct {
 	Name     string
-	Metric   ExternalSummary
 	Start    time.Time
 	Request  *http.Request
 	Response *http.Response
@@ -30,7 +25,7 @@ func WriteExternalCall(opts ExternalOptions) {
 	if opts.Request != nil && opts.Request.URL != nil {
 		handler = opts.Request.URL.Path
 	}
-	opts.Metric.
+	ExternalSummary.
 		WithLabelValues(opts.Name, handler, status).
 		Observe(time.Since(opts.Start).Seconds())
 }
