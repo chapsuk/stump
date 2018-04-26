@@ -27,7 +27,7 @@ var (
 			Help:      "is external calls metrics",
 			MaxAge:    time.Minute,
 		},
-		[]string{"external", "path", "status"},
+		[]string{"external", "method", "status"},
 	)
 )
 

@@ -21,11 +21,11 @@ func WriteExternalCall(opts ExternalOptions) {
 	if opts.Response != nil {
 		status = strconv.Itoa(opts.Response.StatusCode)
 	}
-	handler := "undefined"
+	method := "undefined"
 	if opts.Request != nil && opts.Request.URL != nil {
-		handler = opts.Request.URL.Path
+		method = opts.Request.Method
 	}
 	ExternalSummary.
-		WithLabelValues(opts.Name, handler, status).
+		WithLabelValues(opts.Name, method, status).
 		Observe(time.Since(opts.Start).Seconds())
 }
