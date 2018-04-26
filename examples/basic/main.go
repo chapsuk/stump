@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/m1ome/stump"
-	"github.com/m1ome/stump/helpers"
+	"github.com/m1ome/stump/helpers/cli"
 	"github.com/m1ome/stump/examples/basic/controllers"
 	"github.com/m1ome/stump/examples/basic/workers"
 	"github.com/m1ome/stump/core"
@@ -11,7 +11,7 @@ import (
 func main() {
 	s := stump.MustSetup()
 
-	serve := helpers.CliCommandServe(s, func() error {
+	serve := cli.CliCommandServe(s, func() error {
 		// Initializing controller & workers
 		c := controllers.New(s)
 		w := workers.New(s)

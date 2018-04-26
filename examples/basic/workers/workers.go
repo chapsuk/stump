@@ -6,7 +6,7 @@ import (
 	"context"
 	"github.com/m1ome/stump/examples/basic/models"
 	"github.com/m1ome/stump/package/crud"
-	"github.com/m1ome/stump/helpers"
+	"github.com/m1ome/stump/helpers/workers"
 	"time"
 )
 
@@ -47,7 +47,7 @@ func (w *Workers) Start() {
 	w.stump.Logger().Infow("Starting workers")
 
 	w.g.Add(
-		helpers.ScheduleWithLock(w.stump.Redis(), w.UpdateUserRatings, time.Second*30, helpers.LockOptions{
+		workers.ScheduleWithLock(w.stump.Redis(), w.UpdateUserRatings, time.Second*30, workers.LockOptions{
 			Key:     "locker",
 			TTL:     time.Minute,
 			Logger:  w.stump.Logger(),
