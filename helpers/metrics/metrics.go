@@ -6,6 +6,10 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
+const (
+	undefined = "undefined"
+)
+
 var (
 	// ControllerSummary metrics of controllers call
 	ControllerSummary = prometheus.NewSummaryVec(

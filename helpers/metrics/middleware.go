@@ -7,7 +7,7 @@ import (
 	"github.com/m1ome/stump/package/web"
 )
 
-func WebMiddleware(next web.HandlerFunc) web.HandlerFunc {
+func EchoMiddleware(next web.HandlerFunc) web.HandlerFunc {
 	return func(ctx web.Context) error {
 		start := time.Now()
 

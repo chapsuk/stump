@@ -17,13 +17,16 @@ type ExternalOptions struct {
 // if response is nil set status label to `undefined`
 // if request is nil set handler label to `undefined``
 func WriteExternalCall(opts ExternalOptions) {
-	status := "undefined"
+	var status, method string
 	if opts.Response != nil {
 		status = strconv.Itoa(opts.Response.StatusCode)
+	} else {
+		status = undefined
 	}
-	method := "undefined"
 	if opts.Request != nil && opts.Request.URL != nil {
 		method = opts.Request.Method
+	} else {
+		method = undefined
 	}
 	ExternalSummary.
 		WithLabelValues(opts.Name, method, status).
